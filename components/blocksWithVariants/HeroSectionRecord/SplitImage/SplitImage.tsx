@@ -11,6 +11,16 @@ const SplitImage = ({ fragment }: Props) => {
     HeroSectionFragmentDoc,
     fragment,
   );
+  // The CDA returns {x: 0.5, y: 0.5} for assets with no focal point set, so a
+  // centred value cannot be told apart from "unset". Treat it as unset and keep
+  // this layout's own anchor; anything else is an explicit editorial choice.
+  const focalPoint = heroImage?.focalPoint;
+  const hasEditorialFocalPoint =
+    !!focalPoint && !(focalPoint.x === 0.5 && focalPoint.y === 0.5);
+  const objectPosition = hasEditorialFocalPoint
+    ? `${focalPoint.x * 100}% ${focalPoint.y * 100}%`
+    : 'left';
+
   return (
     <div className="relative mt-24 flex flex-col-reverse py-16 lg:flex-col lg:pb-0 lg:pt-0">
       <div className="inset-y-0 right-0 top-0 z-0 mx-auto w-full max-w-xl px-4 md:px-0 lg:absolute lg:mx-0 lg:mb-0 lg:w-7/12 lg:max-w-full lg:pr-0 xl:px-0">
@@ -27,7 +37,7 @@ const SplitImage = ({ fragment }: Props) => {
             className="hidden h-56 w-full rounded object-cover shadow-lg md:h-96 lg:block lg:h-full lg:rounded-none lg:shadow-none"
             layout="fill"
             objectFit="cover"
-            objectPosition="left"
+            objectPosition={objectPosition}
             fragment={heroImage?.responsiveImage}
           />
         )}

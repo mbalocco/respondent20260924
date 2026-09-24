@@ -9,6 +9,10 @@ fragment HeroSection on HeroSectionRecord {
   heroTitle
   displayOptions
   heroImage {
+    focalPoint {
+      x
+      y
+    }
     responsiveImage {
       ...DatoImage_responsiveImage
     }
