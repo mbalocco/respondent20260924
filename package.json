@@ -56,6 +56,7 @@
     "@types/react": "^19.0.0",
     "@types/react-syntax-highlighter": "^15.5.7",
     "autoprefixer": "^10.4.13",
+    "dotenv": "^18.0.3",
     "encoding": "^0.1.13",
     "graphql-config": "^5.1.0",
     "postcss": "^8.4.21",
