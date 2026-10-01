@@ -51,6 +51,14 @@ const LanguageSelector = ({ globalPageProps, languages }: Props) => {
       </div>
 
       <div
+        // Keep focus on the trigger while the menu is being pressed. Without
+        // this, mousedown moves focus off the button, the onBlur above fires,
+        // and the menu is hidden 100ms later — while the mouse is still down.
+        // mouseup then lands on whatever is behind the menu, so no click event
+        // is ever produced and the language does not change. The failure is
+        // timing-dependent: a brisk click works, a relaxed one does not, and a
+        // synthetic element.click() never reproduces it at all.
+        onMouseDown={(e) => e.preventDefault()}
         className={`absolute w-40 end-0 z-10 ml-4 mt-1 rounded-md border border-gray-100 bg-white shadow-lg${
           isOpen ? '' : ' hidden'
         }`}
@@ -63,6 +71,7 @@ const LanguageSelector = ({ globalPageProps, languages }: Props) => {
               className="inline-flex w-full cursor-pointer items-end justify-start rounded-lg text-sm font-medium text-gray-900 hover:bg-gray-100"
             >
               <Link
+                onClick={() => setIsOpen(false)}
                 href={buildUrl({ params: { locale } }, pathnameWithoutPrefix)}
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white w-full text-center"
                 role="menuitem"
